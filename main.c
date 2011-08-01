@@ -19,7 +19,7 @@ int main(int argc, char** argv) {
   int tab[TAILLE];
   Liste* liste;
   
-  printf("01) Tableau initialise et non trie \n");
+  printf("\n\n01) Tableau initialise et non trie \n");
   initialiseTableau(tab, TAILLE, 100);
   afficheTableau(tab, TAILLE);
   
@@ -30,16 +30,24 @@ int main(int argc, char** argv) {
   afficheTableau(tab, TAILLE);
   
   liste = creerListeDefaut();
-  ajouterFinListe(liste, "test");
-  ajouterFinListe(liste, "kikoo");
+  ajouterDebutListe(liste, "test");
+  ajouterDebutListe(liste, "kikoo");
+  ajouterFinListe(liste, "lol");
+  ajouterFinListe(liste, "pasteque");
   ajouterDebutListe(liste, "pladamousse");
-  ajouterDebutListe(liste, "chupa");
-  ajouterDebutListe(liste, "zobi");
   afficherListe(liste);
-  printf("\nExtraction debut de liste : %s \n", extraireDebutListe(liste));
+  printf("\nAffichage de droite a gauche \n");
+/*
   afficherListe(liste);
-  printf("\nExtraction fin de liste : %s \n", extraireFinListe(liste));
+  printf("\nExtraction debut de liste : %s \n", (char*) extraireDebutListe(liste));
   afficherListe(liste);
+  printf("\nExtraction fin de liste : %s \n", (char*) extraireFinListe(liste));
+  afficherListe(liste);
+  printf("\nOn extrait tout : ");
+  while(listeVide(liste) == 0) {
+    printf("%s ", (char*) extraireDebutListe(liste));
+  }
+*/
   detruireListe(liste);
 
   printf("\n");

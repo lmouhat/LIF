@@ -14,21 +14,23 @@
 
 /* comparer deux chaînes de caractères
    fournit <0 si ch1 < ch2; 0 si ch1=ch2; >0 sinon */
-static int comparerChaine (Objet* objet1, Objet* objet2) {
-  return strcmp ((char*) objet1, (char*) objet2);
+static int comparerChaine(Objet* objet1, Objet* objet2) {
+  return strcmp((char*) objet1, (char*) objet2);
 }
 
-static char* toString (Objet* objet) {
+static char* toString(Objet* objet) {
   return (char*) objet;
 }
 
-/*static Element* elementCourant (Liste* l) {
+/*
+static Element* elementCourant (Liste* l) {
   Element* p = l->courant;
   if (l->courant != NULL) {
     l->courant = l->courant->suivant;
   }
   return p;
-}*/
+}
+*/
 
 /* Fonctions publiques */
 
@@ -49,23 +51,25 @@ void initListeDefaut(Liste* l) {
 
 Liste* creerListe(int type, char* (*toString) (Objet*), \
         int (*comparer) (Objet*, Objet*)) {
-  Liste* l = (Liste*) malloc(sizeof(Liste));
+  Liste* l = (Liste*) malloc(sizeof (Liste));
   initListe(l, type, toString, comparer);
   return l;
 }
 
 Liste* creerListeDefaut(void) {
-  Liste* l = (Liste*) malloc(sizeof(Liste));
+  Liste* l = (Liste*) malloc(sizeof (Liste));
   initListeDefaut(l);
   return l;
 }
 
 void ajouterFinListe(Liste* l, Objet* objet) {
-  Element* e = (Element*) malloc(sizeof(Element*));
+  Element* e = (Element*) malloc(sizeof (Element));
   e->reference = objet;
-  if(l->premier == NULL) {
+  if (l->premier == NULL) {
     l->premier = e;
+    e->precedent = NULL;
   } else {
+    e->precedent = l->dernier;
     l->dernier->suivant = e;
   }
   l->dernier = e;
@@ -73,11 +77,15 @@ void ajouterFinListe(Liste* l, Objet* objet) {
 }
 
 void ajouterDebutListe(Liste* l, Objet* objet) {
-  Element* e = (Element*) malloc(sizeof(Element*));
+  Element* e = (Element*) malloc(sizeof (Element));
   e->reference = objet;
   e->suivant = l->premier;
+  e->precedent = NULL;
+  if (l->premier != NULL) {
+    l->premier->precedent = e;
+  }
   l->premier = e;
-  if(l->dernier == NULL) {
+  if (l->dernier == NULL) {
     l->dernier = e;
   }
   l->nbElt++;
@@ -88,49 +96,53 @@ int nbEltListe(Liste* l) {
 }
 
 int listeVide(Liste* l) {
-  if(nbEltListe(l) > 0) {
+  if (nbEltListe(l) > 0) {
     return 0;
   }
   return 1;
 }
 
 Objet* extraireDebutListe(Liste* l) {
-  Objet* p = l->premier->reference;
-  
-  if(listeVide(l) == 0) {
+  Element* p = l->premier;
+  Objet* obj = l->premier->reference;
+
+  if (listeVide(l) == 0) {
     l->premier = l->premier->suivant;
-    if(l->premier == NULL) {
+    if (l->premier == NULL) {
       l->dernier = NULL;
+    } else {
+      l->premier->precedent = NULL;
     }
     l->nbElt--;
+    free(p);
   }
-  
-  return p;
+
+  return obj;
 }
 
-/* TODO : a corriger */
 Objet* extraireFinListe(Liste* l) {
-  Element* p = l->premier;
-  
-  if(listeVide(l) == 0) {
-    if(l->premier == l->dernier) {
-      l->premier = l->dernier = NULL;
+  Element* p = l->dernier;
+  Objet* obj = l->dernier->reference;
+
+  if (listeVide(l) == 0) {
+    l->dernier = l->dernier->precedent;
+    if (l->dernier == NULL) {
+      l->premier = NULL;
     } else {
-      while(p != l->dernier) {
-        p = p->suivant;
-      }
-      l->dernier = p;
+      l->dernier->suivant = NULL;
     }
     l->nbElt--;
+    free(p);
   }
-  
-  return p->reference;
+
+  return obj;
 }
 
 void afficherListe(Liste* l) {
   Element* e = l->premier;
-  
+
   printf("%d elements : ", nbEltListe(l));
+
   while(e != NULL) {
     printf("%s ", l->toString(e->reference));
     e = e->suivant;
@@ -140,8 +152,8 @@ void afficherListe(Liste* l) {
 void viderListe(Liste* l) {
   Element* e = l->premier;
   Element* suiv;
-  
-  while(e != NULL) {
+
+  while (e != NULL) {
     suiv = e->suivant;
     free(e);
     e = suiv;

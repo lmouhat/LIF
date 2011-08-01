@@ -20,6 +20,7 @@ typedef void Objet;
 struct s_Element {
   Objet* reference; /* référence un objet */
   struct s_Element* suivant; /* élément suivant de la liste */
+  struct s_Element* precedent; /* élément suivant de la liste */
 };
 typedef struct s_Element Element;
 
