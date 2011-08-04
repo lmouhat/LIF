@@ -8,13 +8,12 @@
 #ifndef LISTE_H
 #define	LISTE_H
 
+#include "Objet.h"
+
 /* Les types de chaine */
 #define NONORDONNE  0
 #define CROISSANT   1
 #define DECROISSANT 2
-
-/* un objet générique */
-typedef void Objet;
 
 /* le type Element (élément de la liste) */
 struct s_Element {
@@ -39,21 +38,26 @@ typedef struct s_Liste Liste;
 /*
  * Les fonctions publiques
  */
-void initListe(Liste* l, int type, char* (*toString) (Objet*), \
+void listeInit(Liste* l, int type, char* (*toString) (Objet*), \
       int (*comparer) (Objet*, Objet*));
-void initListeDefaut(Liste* l);
-Liste* creerListe(int type, char* (*toString) (Objet*), \
+void listeInitDefaut(Liste* l);
+Liste* listeCreer(int type, char* (*toString) (Objet*), \
         int (*comparer) (Objet*, Objet*));
-Liste* creerListeDefaut(void);
-void ajouterFinListe(Liste* l, Objet* objet);
-void ajouterDebutListe(Liste* l, Objet* objet);
-int nbEltListe(Liste* l);
+Liste* listeCreerDefaut(void);
+void listeAjouterFin(Liste* l, Objet* objet);
+void listeAjouterDebut(Liste* l, Objet* objet);
+void listeInsererApres(Liste* l, Objet* objet, Element* apres);
+int listeNbElt(Liste* l);
 int listeVide(Liste* l);
-void afficherListe(Liste* l);
-Objet* extraireDebutListe(Liste* l);
-Objet* extraireFinListe(Liste* l);
-void viderListe(Liste* l);
-void detruireListe(Liste* l);
+Objet* listeChercherObjet(Liste* l, Objet* objet);
+void listeAfficherGD(Liste* l);
+void listeAfficherDG(Liste* l);
+Objet* listeExtraireDebut(Liste* l);
+Objet* listeExtraireFin(Liste* l);
+void listeTriInsertion(Liste* l);
+void listeTriRapide(Liste* l);
+void listeVider(Liste* l);
+void listeDetruire(Liste* l);
 
 
 #endif	/* LISTE_H */

@@ -10,11 +10,13 @@
 #include <time.h>
 #include "Tri.h"
 
-/* Déclaration fonction privées */
+/* Déclaration des fonctions locales */
 static void tasEntasserMax(int * tab, int taille, int ind);
 static void tasConstruireTasMax(int * tab, int taille);
 
-/* Fonctions publiques */
+/*
+ * Fonctions publiques
+ */
 void initialiseTableau(int * tab, int taille, int max) {
   int i;
   

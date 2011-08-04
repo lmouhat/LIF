@@ -5,6 +5,8 @@
                    displayName="Header Files"
                    projectFiles="true">
       <itemPath>Liste.h</itemPath>
+      <itemPath>Objet.h</itemPath>
+      <itemPath>Table.h</itemPath>
       <itemPath>Tri.h</itemPath>
     </logicalFolder>
     <logicalFolder name="ResourceFiles"
@@ -15,6 +17,7 @@
                    displayName="Source Files"
                    projectFiles="true">
       <itemPath>Liste.c</itemPath>
+      <itemPath>Table.c</itemPath>
       <itemPath>Tri.c</itemPath>
       <itemPath>main.c</itemPath>
     </logicalFolder>
