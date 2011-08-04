@@ -1,8 +1,9 @@
-/* 
- * File:   Table.h
- * Author: lmouhat
+/**
+ * @brief       Module TDA Table
+ * @file        Table.h
+ * @author      lmouhat@gmail.com
+ * @date        2011/08/03
  *
- * Created on 3 août 2011, 15:56
  */
 
 #ifndef TABLE_H
@@ -10,7 +11,9 @@
 
 #include "Objet.h"
 
-/* le type Table */
+/** @struct s_Table
+ *  @brief La structure d'une table
+ */
 struct s_Table {
   Objet** element; /* un tableau de pointeurs vers les objets */
   int nMax; /* nombre max. d'éléments dans la table */
@@ -18,22 +21,36 @@ struct s_Table {
   char* (*toString) (Objet*);
   int (*comparer) (Objet*, Objet*);
 };
+
+/** @typedef Table
+ *  @brief Le type Table
+ */
 typedef struct s_Table Table;
+
 
 /*
  * Les fonctions publiques
  */
+
+/* construction - destruction */
 Table* tableCreer(int nMax, char* (*toString) (Objet*), \
         int (*comparer) (Objet*, Objet*));
 Table* tableCreerDefaut(int nMax);
 void tableDetruire(Table* table);
 
+/* opérations élémentaires */
 int tableAjouter(Table* table, Objet* objet);
 int tableTaille(Table* table);
 Objet* tableElement(Table* table, int pos);
 
+/* recherche */
+int tableRechercheSeq(Table* table, Objet* objet);
+int tableRechercheDicho(Table* table, Objet* objet);
+
+/* affichage et tri */
 void tableAfficher(Table* table);
 void tableTriInsertion(Table* table);
+void tableTriRapide(Table* table);
 
 
 

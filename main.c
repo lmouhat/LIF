@@ -174,6 +174,17 @@ void testTable(void) {
   printf("\n01) Ajout d'elements au tableau et affichage \n");
   tableAfficher(table);
   
+  printf("\nxx) Recherche sequentielle de l'element tomate \n");
+  test = nouveau("tomate", 0, 0.0);
+  retour = tableRechercheSeq(table, test);
+  if(retour < 0) {
+    printf("Element non trouve !\n");
+  } else {
+    printf("Element trouve, position : %d \n", retour);
+    printf("Affichage de l'element : ");
+    affTest(tableElement(table, retour));
+  }
+  
   printf("\nxx) Tri de la table \n");
   tableTriInsertion(table);
   tableAfficher(table);

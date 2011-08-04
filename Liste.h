@@ -1,8 +1,9 @@
-/* 
- * File:   Liste.h
- * Author: lmouhat
+/**
+ * @brief       Module TDA Liste
+ * @file        Liste.h
+ * @author      lmouhat@gmail.com
+ * @date        2011/08/03
  *
- * Created on 29 juillet 2011, 17:49
  */
 
 #ifndef LISTE_H
@@ -35,9 +36,11 @@ struct s_Liste {
 };
 typedef struct s_Liste Liste;
 
+
 /*
  * Les fonctions publiques
  */
+
 void listeInit(Liste* l, int type, char* (*toString) (Objet*), \
       int (*comparer) (Objet*, Objet*));
 void listeInitDefaut(Liste* l);

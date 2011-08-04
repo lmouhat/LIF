@@ -1,31 +1,29 @@
-/* 
- * File:   Table.c
- * Author: lmouhat
- *
- * Created on 3 août 2011, 15:56
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "Table.h"
 
-/* Déclaration des fonctions locales */
 
-/* comparer deux chaînes de caractères
-   fournit <0 si ch1 < ch2; 0 si ch1=ch2; >0 sinon */
-static int comparerChaine(Objet* objet1, Objet* objet2) {
-  return strcmp((char*) objet1, (char*) objet2);
-}
+/*
+ * Déclaration des fonctions locales
+ */
 
-static char* toString(Objet* objet) {
-  return (char*) objet;
-}
-
+static int comparerChaine(Objet* objet1, Objet* objet2);
+static char* toString(Objet* objet);
 static void tablePermuter(Table* table, int i, int j);
 
-/* Fonctions publiques */
 
+/*
+ * Fonctions publiques
+ */
+
+/** @brief Création de la table
+ *  @param table La table
+ *  @param nMax Taille de la table
+ *  @param toString Pointeur de fonction vers la fonction d'affichage
+ *  @param comparer Pointeur de fonction vers la fonction de comparaison
+ *  @return Pointeur vers la table
+ */
 Table* tableCreer(int nMax, char* (*toString) (Objet*), \
         int (*comparer) (Objet*, Objet*)) {
   Table* table = malloc(sizeof (Table));
@@ -38,19 +36,36 @@ Table* tableCreer(int nMax, char* (*toString) (Objet*), \
   return table;
 }
 
+/** @brief Création de la table par défaut
+ *  @param nMax Taille de la table
+ *  @return Pointeur vers la table
+ */
 Table* tableCreerDefaut(int nMax) {
   return tableCreer(nMax, toString, comparerChaine);
 }
 
+/** @brief Destruction de la table
+ *  @param table La table
+ *  @return rien
+ */
 void tableDetruire(Table* table) {
   free(table->element);
   free(table);
 }
 
+/** @brief Retourne la taille effective de la table
+ *  @param table La table
+ *  @return la taille effective de la table
+ */
 int tableTaille(Table* table) {
   return table->n;
 }
 
+/** @brief Ajout d'un objet à la table
+ *  @param table La table destinataire
+ *  @param objet L'objet à ajouter
+ *  @return 1 si réussite, 0 si échec
+ */
 int tableAjouter(Table* table, Objet* objet) {
   int i;
   if (table->n < table->nMax) {
@@ -62,17 +77,53 @@ int tableAjouter(Table* table, Objet* objet) {
   }
 }
 
-
-Objet* tableElement(Table* table, int i) {
+/** @brief Retourne l'objet à la position donnée
+ *  @param table La table dans laquelle la consultation est effectuée
+ *  @param pos La position
+ *  @return Le pointeur vers l'objet ou NULL si non trouvé
+ */
+Objet* tableElement(Table* table, int pos) {
   Objet* objet;
-  if ((i >= 0) && (i < table->n)) {
-    objet = table->element[i];
+  if ((pos >= 0) && (pos < table->n)) {
+    objet = table->element[pos];
     return objet;
   } else {
     return NULL;
   }
 }
 
+/** @brief Recherche séquentielle d'un objet
+ *  @param table La table dans laquelle la recherche est effectuée
+ *  @param objet L'objet recherché
+ *  @return -1 si pas trouvé sinon la position de l'élément dans la table
+ */
+int tableRechercheSeq(Table* table, Objet* objet) {
+  int i = 0;
+  int trouve = -1;
+  
+  while((i < table->n) && (trouve < 0)) {
+    if(table->comparer(table->element[i], objet) == 0) {
+      trouve = i;
+    }
+    i++;
+  }
+  
+  return trouve;
+}
+
+/** @brief Recherche dichotomique d'un objet
+ *  @param table La table dans laquelle la recherche est effectuée
+ *  @param objet L'objet recherché
+ *  @return -1 si pas trouvé sinon la position de l'élément dans la table
+ */
+int tableRechercheDicho(Table* table, Objet* objet) {
+  
+}
+
+/** @brief Affichage de la table
+ *  @param table La table à afficher
+ *  @return rien
+ */
 void tableAfficher(Table* table) {
   Objet* objet;
   int i;
@@ -84,22 +135,10 @@ void tableAfficher(Table* table) {
   printf("\n");
 }
 
-/*
-void triInsertion(int *tab, int taille) {
-  int i,j,cle;
-  
-  for(j=1;j<taille;j++) {
-    cle = tab[j];
-    i = j-1;
-    while(i>=0 && tab[i] > cle) {
-      tab[i+1] = tab[i];
-      i--;
-    }
-    tab[i+1] = cle;
-  }
-}
-*/
-
+/** @brief Tri par insertion de la table
+ *  @param table La table à trier
+ *  @return rien
+ */
 void tableTriInsertion(Table* table) {
   int i, j;
   Objet* cle;
@@ -115,18 +154,34 @@ void tableTriInsertion(Table* table) {
   }
 }
 
+/** @brief Tri rapide de la table
+ *  @param table La table à trier
+ *  @return rien
+ *  @todo A programmer
+ */
 void tableTriRapide(Table* table) {
   
 }
-
 
 
 /*
  * Fonctions locales
  */
 
+/* permuter 2 objets de la table */
 static void tablePermuter(Table* table, int i, int j) {
   Objet* tmp = table->element[i];
   table->element[i] = table->element[j];
   table->element[j] = tmp;
+}
+
+/* comparer deux chaînes de caractères
+   fournit <0 si ch1 < ch2; 0 si ch1=ch2; >0 sinon */
+static int comparerChaine(Objet* objet1, Objet* objet2) {
+  return strcmp((char*) objet1, (char*) objet2);
+}
+
+/* retourne une chaine de caractères */
+static char* toString(Objet* objet) {
+  return (char*) objet;
 }

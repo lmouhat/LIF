@@ -1,16 +1,11 @@
-/* 
- * File:   Liste.c
- * Author: lmouhat
- *
- * Created on 29 juillet 2011, 17:49
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "Liste.h"
 
-/* Déclaration des fonctions locales */
+/*
+ * Déclaration des fonctions locales
+ */
 
 static int comparerChaine(Objet* objet1, Objet* objet2);
 static char* toString(Objet* objet);
@@ -18,7 +13,9 @@ static void faireTriRapide(Liste* l, Element* pNoeud, int n_elements);
 static void permuterElements(Element* e1, Element* e2);
 
 
-/* Fonctions publiques */
+/*
+ * Fonctions publiques
+ */
 
 void listeInit(Liste* l, int type, char* (*toString) (Objet*), \
       int (*comparer) (Objet*, Objet*)) {
@@ -205,6 +202,7 @@ void listeDetruire(Liste* l) {
   listeVider(l);
   free(l);
 }
+
 
 /*
  * Fonctions locales

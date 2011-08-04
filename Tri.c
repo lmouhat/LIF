@@ -1,18 +1,16 @@
-/* 
- * File:   Tri.c
- * Author: lmouhat
- *
- * Created on 26 juillet 2011, 09:33
- */
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
 #include "Tri.h"
 
-/* Déclaration des fonctions locales */
+
+/*
+ * Déclaration des fonctions locales
+ */
+
 static void tasEntasserMax(int * tab, int taille, int ind);
 static void tasConstruireTasMax(int * tab, int taille);
+
 
 /*
  * Fonctions publiques
@@ -64,7 +62,10 @@ void triTas(int * tab, int taille) {
   }
 }
 
-/* Fonctions privées */
+/*
+ * Fonctions locales
+ */
+
 static void tasEntasserMax(int * tab, int taille, int ind) {
   int gauche, droite, max, tmp;
   

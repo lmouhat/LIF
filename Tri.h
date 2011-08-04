@@ -1,6 +1,6 @@
 /* 
  * File:   Tri.h
- * Author: lmouhat
+ * Author: lmouhat@gmail.com
  *
  * Created on 26 juillet 2011, 09:38
  */
