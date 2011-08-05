@@ -222,7 +222,7 @@ static void permuterElements(Element* e1, Element* e2) {
   }
 }
 
-/* -- faireQSort
+/* -- faireTriRapide
  * liste: liste à trier
  * noeud: pointeur vers le premier element de la liste à trier
  * nbElements: nombre d'éléments de cette liste

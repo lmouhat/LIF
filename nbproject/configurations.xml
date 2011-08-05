@@ -4,6 +4,7 @@
     <logicalFolder name="HeaderFiles"
                    displayName="Header Files"
                    projectFiles="true">
+      <itemPath>Graphe.h</itemPath>
       <itemPath>Liste.h</itemPath>
       <itemPath>Objet.h</itemPath>
       <itemPath>Table.h</itemPath>
@@ -16,6 +17,7 @@
     <logicalFolder name="SourceFiles"
                    displayName="Source Files"
                    projectFiles="true">
+      <itemPath>Graphe.c</itemPath>
       <itemPath>Liste.c</itemPath>
       <itemPath>Table.c</itemPath>
       <itemPath>Tri.c</itemPath>

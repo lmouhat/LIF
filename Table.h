@@ -15,9 +15,12 @@
  *  @brief La structure d'une table
  */
 struct s_Table {
-  Objet** element; /* un tableau de pointeurs vers les objets */
-  int nMax; /* nombre max. d'éléments dans la table */
-  int n; /* nombre réel d'éléments dans la table */
+  /** un tableau de pointeurs vers les objets */
+  Objet** element;
+  /** nombre max. d'éléments dans la table */
+  int nMax; 
+  /** nombre réel d'éléments dans la table */
+  int n; 
   char* (*toString) (Objet*);
   int (*comparer) (Objet*, Objet*);
 };
@@ -40,6 +43,7 @@ void tableDetruire(Table* table);
 
 /* opérations élémentaires */
 int tableAjouter(Table* table, Objet* objet);
+Objet* tableRetirer(Table* table);
 int tableTaille(Table* table);
 Objet* tableElement(Table* table, int pos);
 

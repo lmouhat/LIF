@@ -12,6 +12,7 @@
 #include "Tri.h"
 #include "Liste.h"
 #include "Table.h"
+#include "Graphe.h"
 
 struct s_Test {
   int entier;
@@ -139,7 +140,13 @@ void testTri(void) {
 }
 
 void testGraphe(void) {
+  Graphe* graphe;
+  
   printf("=== TEST GRAPHE ===\n\n");
+  
+  printf("\n01) Création d'un graphe, capacite 25 non value \n");
+  graphe = grapheCreerDefaut(25, 0);
+  grapheDetruire(graphe);
 }
 
 void testTable(void) {
@@ -209,6 +216,11 @@ void testTable(void) {
     affTest(test);
   }
   
+  printf("\nxx) Retrait du dernier element de la table : ");
+  test = tableRetirer(table);
+  affTest(test);
+  free(test);
+  
   printf("\nxx) Destruction de la table\n");
   for(i=0; i<table->n; i++) {
     test = tableElement(table, i);
@@ -224,9 +236,9 @@ int main(int argc, char** argv) {
 /*
   testTri();
   testListe();
-  testGraphe();
-*/
   testTable();
+*/
+  testGraphe();
   return (EXIT_SUCCESS);
 }
 

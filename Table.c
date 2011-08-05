@@ -3,7 +3,6 @@
 #include <string.h>
 #include "Table.h"
 
-
 /*
  * Déclaration des fonctions locales
  */
@@ -61,13 +60,14 @@ int tableTaille(Table* table) {
   return table->n;
 }
 
-/** @brief Ajout d'un objet à la table
- *  @param table La table destinataire
+/** @brief Ajout d'un objet à la table (=push)
+ *  @param table La table traitée
  *  @param objet L'objet à ajouter
  *  @return 1 si réussite, 0 si échec
  */
 int tableAjouter(Table* table, Objet* objet) {
   int i;
+  
   if (table->n < table->nMax) {
     i = table->n++;
     table->element[i] = objet;
@@ -77,6 +77,21 @@ int tableAjouter(Table* table, Objet* objet) {
   }
 }
 
+/** @brief Retrait du dernier objet de la table (=pop)
+ *  @param table La table traitée
+ *  @return Pointeur vers l'objet retiré, sinon renvoie NULL
+ */
+Objet* tableRetirer(Table* table) {
+  Objet* objet = NULL;
+  
+  if(table->n > 0) {
+    table->n--;
+    objet = table->element[table->n];
+  }
+  
+  return objet;
+}
+
 /** @brief Retourne l'objet à la position donnée
  *  @param table La table dans laquelle la consultation est effectuée
  *  @param pos La position
@@ -84,6 +99,7 @@ int tableAjouter(Table* table, Objet* objet) {
  */
 Objet* tableElement(Table* table, int pos) {
   Objet* objet;
+  
   if ((pos >= 0) && (pos < table->n)) {
     objet = table->element[pos];
     return objet;
@@ -189,6 +205,7 @@ void tableTriRapide(Table* table) {
 /* permuter 2 objets de la table */
 static void tablePermuter(Table* table, int i, int j) {
   Objet* tmp = table->element[i];
+  
   table->element[i] = table->element[j];
   table->element[j] = tmp;
 }

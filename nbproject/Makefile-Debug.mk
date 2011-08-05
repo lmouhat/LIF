@@ -34,6 +34,7 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
+	${OBJECTDIR}/Graphe.o \
 	${OBJECTDIR}/Tri.o \
 	${OBJECTDIR}/Liste.o \
 	${OBJECTDIR}/main.o \
@@ -63,6 +64,11 @@ LDLIBSOPTIONS=
 ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lif: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lif ${OBJECTFILES} ${LDLIBSOPTIONS} 
+
+${OBJECTDIR}/Graphe.o: Graphe.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.c) -g -MMD -MP -MF $@.d -o ${OBJECTDIR}/Graphe.o Graphe.c
 
 ${OBJECTDIR}/Tri.o: Tri.c 
 	${MKDIR} -p ${OBJECTDIR}
