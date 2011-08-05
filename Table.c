@@ -55,7 +55,7 @@ void tableDetruire(Table* table) {
 
 /** @brief Retourne la taille effective de la table
  *  @param table La table
- *  @return la taille effective de la table
+ *  @return La taille effective de la table
  */
 int tableTaille(Table* table) {
   return table->n;
@@ -95,15 +95,15 @@ Objet* tableElement(Table* table, int pos) {
 /** @brief Recherche séquentielle d'un objet
  *  @param table La table dans laquelle la recherche est effectuée
  *  @param objet L'objet recherché
- *  @return -1 si pas trouvé sinon la position de l'élément dans la table
+ *  @return Pointeur vers l'objet trouvé, sinon renvoie NULL
  */
-int tableRechercheSeq(Table* table, Objet* objet) {
+Objet* tableRechercheSeq(Table* table, Objet* objet) {
   int i = 0;
-  int trouve = -1;
+  Objet* trouve = NULL;
   
-  while((i < table->n) && (trouve < 0)) {
+  while((i < table->n) && (trouve == NULL)) {
     if(table->comparer(table->element[i], objet) == 0) {
-      trouve = i;
+      trouve = table->element[i];
     }
     i++;
   }
@@ -114,10 +114,28 @@ int tableRechercheSeq(Table* table, Objet* objet) {
 /** @brief Recherche dichotomique d'un objet
  *  @param table La table dans laquelle la recherche est effectuée
  *  @param objet L'objet recherché
- *  @return -1 si pas trouvé sinon la position de l'élément dans la table
+ *  @return Pointeur vers l'objet trouvé, sinon renvoie NULL
  */
-int tableRechercheDicho(Table* table, Objet* objet) {
+Objet* tableRechercheDicho(Table* table, Objet* objet) {
+  Objet* trouve = NULL;
+  int gauche = 0;
+  int droite = table->n - 1;
+  int pos;
+  int comp;
   
+  while((trouve == NULL) && (gauche <= droite)) {
+    pos = (droite + gauche) / 2;
+    comp = table->comparer(table->element[pos], objet);
+    if(comp == 0) {
+      trouve = table->element[pos];
+    } else if(comp > 0) {
+      droite = pos - 1;
+    } else {
+      gauche = pos + 1;
+    }
+  }
+  
+  return trouve;
 }
 
 /** @brief Affichage de la table

@@ -9,7 +9,7 @@
 
 static int comparerChaine(Objet* objet1, Objet* objet2);
 static char* toString(Objet* objet);
-static void faireTriRapide(Liste* l, Element* pNoeud, int n_elements);
+static void faireTriRapide(Liste* liste, Element* pNoeud, int n_elements);
 static void permuterElements(Element* e1, Element* e2);
 
 
@@ -17,160 +17,164 @@ static void permuterElements(Element* e1, Element* e2);
  * Fonctions publiques
  */
 
-void listeInit(Liste* l, int type, char* (*toString) (Objet*), \
+void listeInit(Liste* liste, int type, char* (*toString) (Objet*), \
       int (*comparer) (Objet*, Objet*)) {
-  l->premier = NULL;
-  l->dernier = NULL;
-  l->courant = NULL;
-  l->nbElt = 0;
-  l->type = type;
-  l->toString = toString;
-  l->comparer = comparer;
+  liste->premier = NULL;
+  liste->dernier = NULL;
+  liste->courant = NULL;
+  liste->nbElt = 0;
+  liste->type = type;
+  liste->toString = toString;
+  liste->comparer = comparer;
 }
 
-void listeInitDefaut(Liste* l) {
-  listeInit(l, NONORDONNE, toString, comparerChaine);
+void listeInitDefaut(Liste* liste) {
+  listeInit(liste, NONORDONNE, toString, comparerChaine);
 }
 
 Liste* listeCreer(int type, char* (*toString) (Objet*), \
         int (*comparer) (Objet*, Objet*)) {
-  Liste* l = malloc(sizeof (Liste));
-  listeInit(l, type, toString, comparer);
-  return l;
+  Liste* liste = malloc(sizeof (Liste));
+  listeInit(liste, type, toString, comparer);
+  return liste;
 }
 
 Liste* listeCreerDefaut(void) {
-  Liste* l = malloc(sizeof (Liste));
-  listeInitDefaut(l);
-  return l;
+  Liste* liste = malloc(sizeof (Liste));
+  listeInitDefaut(liste);
+  return liste;
 }
 
-void listeAjouterFin(Liste* l, Objet* objet) {
-  Element* e = malloc(sizeof (Element));
-  e->reference = objet;
-  if (l->premier == NULL) {
-    l->premier = e;
-    e->precedent = e->suivant = NULL;
+void listeAjouterFin(Liste* liste, Objet* objet) {
+  Element* elem = malloc(sizeof (Element));
+  elem->reference = objet;
+  if (liste->premier == NULL) {
+    liste->premier = elem;
+    elem->precedent = elem->suivant = NULL;
   } else {
-    e->precedent = l->dernier;
-    l->dernier->suivant = e;
-    e->suivant = NULL;
+    elem->precedent = liste->dernier;
+    liste->dernier->suivant = elem;
+    elem->suivant = NULL;
   }
-  l->dernier = e;
-  l->nbElt++;
+  liste->dernier = elem;
+  liste->nbElt++;
 }
 
-void listeAjouterDebut(Liste* l, Objet* objet) {
-  Element* e = malloc(sizeof (Element));
-  e->reference = objet;
-  e->suivant = l->premier;
-  e->precedent = NULL;
-  if (l->premier != NULL) {
-    l->premier->precedent = e;
+void listeAjouterDebut(Liste* liste, Objet* objet) {
+  Element* elem = malloc(sizeof (Element));
+  elem->reference = objet;
+  elem->suivant = liste->premier;
+  elem->precedent = NULL;
+  if (liste->premier != NULL) {
+    liste->premier->precedent = elem;
   }
-  l->premier = e;
-  if (l->dernier == NULL) {
-    l->dernier = e;
+  liste->premier = elem;
+  if (liste->dernier == NULL) {
+    liste->dernier = elem;
   }
-  l->nbElt++;
+  liste->nbElt++;
 }
 
-void listeInsererApres(Liste* l, Objet* objet, Element* apres) {
-  Element* e = malloc(sizeof (Element));
-  e->reference = objet;
-  e->precedent = apres;
-  e->suivant = apres->suivant;
-  apres->suivant = e;
-  l->nbElt++;
+void listeInsererApres(Liste* liste, Objet* objet, Element* apres) {
+  Element* elem = malloc(sizeof (Element));
+  elem->reference = objet;
+  elem->precedent = apres;
+  elem->suivant = apres->suivant;
+  apres->suivant = elem;
+  liste->nbElt++;
 }
 
-int listeNbElt(Liste* l) {
-  return l->nbElt;
+int listeNbElt(Liste* liste) {
+  return liste->nbElt;
 }
 
-int listeVide(Liste* l) {
-  if (listeNbElt(l) > 0) {
+int listeVide(Liste* liste) {
+  if (listeNbElt(liste) > 0) {
     return 0;
   }
   return 1;
 }
 
-Objet* listeExtraireDebut(Liste* l) {
-  Element* p = l->premier;
-  Objet* obj = l->premier->reference;
+Objet* listeExtraireDebut(Liste* liste) {
+  Element* p = liste->premier;
+  Objet* obj = liste->premier->reference;
 
-  if (listeVide(l) == 0) {
-    l->premier = l->premier->suivant;
-    if (l->premier == NULL) {
-      l->dernier = NULL;
+  if (listeVide(liste) == 0) {
+    liste->premier = liste->premier->suivant;
+    if (liste->premier == NULL) {
+      liste->dernier = NULL;
     } else {
-      l->premier->precedent = NULL;
+      liste->premier->precedent = NULL;
     }
-    l->nbElt--;
+    liste->nbElt--;
     free(p);
   }
 
   return obj;
 }
 
-Objet* listeExtraireFin(Liste* l) {
-  Element* p = l->dernier;
-  Objet* obj = l->dernier->reference;
+Objet* listeExtraireFin(Liste* liste) {
+  Element* p = liste->dernier;
+  Objet* obj = liste->dernier->reference;
 
-  if (listeVide(l) == 0) {
-    l->dernier = l->dernier->precedent;
-    if (l->dernier == NULL) {
-      l->premier = NULL;
+  if (listeVide(liste) == 0) {
+    liste->dernier = liste->dernier->precedent;
+    if (liste->dernier == NULL) {
+      liste->premier = NULL;
     } else {
-      l->dernier->suivant = NULL;
+      liste->dernier->suivant = NULL;
     }
-    l->nbElt--;
+    liste->nbElt--;
     free(p);
   }
 
   return obj;
 }
 
-Objet* listeChercherObjet(Liste* l, Objet* objet) {
+Objet* listeChercherObjet(Liste* liste, Objet* objet) {
   int trouve = 0;
   Objet* obj;
-  Element* e = l->premier;
+  Element* elem = liste->premier;
 
-  while (e != NULL && trouve == 0) {
-    obj = e->reference;
-    trouve = l->comparer(objet, obj) == 0;
-    e = e->suivant;
+  while (elem != NULL && trouve == 0) {
+    obj = elem->reference;
+    trouve = liste->comparer(objet, obj) == 0;
+    elem = elem->suivant;
   }
   return trouve == 1 ? obj : 0;
 }
 
-void listeAfficherGD(Liste* l) {
-  Element* e =  l->premier;
+void listeAfficherGD(Liste* liste) {
+  Element* elem =  liste->premier;
 
-  printf("%d elements : ", listeNbElt(l));
+  printf("%d elements : ", listeNbElt(liste));
 
-  while (e != NULL) {
-    printf("%s ", l->toString(e->reference));
-    e = e->suivant;
+  while (elem != NULL) {
+    printf("%s ", liste->toString(elem->reference));
+    elem = elem->suivant;
   }
 }
 
-void listeAfficherDG(Liste* l) {
-  Element* e = l->dernier;
+void listeAfficherDG(Liste* liste) {
+  Element* elem = liste->dernier;
 
-  printf("%d elements : ", listeNbElt(l));
+  printf("%d elements : ", listeNbElt(liste));
 
-  while (e != NULL) {
-    printf("%s ", l->toString(e->reference));
-    e = e->precedent;
+  while (elem != NULL) {
+    printf("%s ", liste->toString(elem->reference));
+    elem = elem->precedent;
   }
 }
 
-void listeTriRapide(Liste* l) {
-  faireTriRapide(l, l->premier, l->nbElt);
+/** @brief Tri de la liste par tri rapide (QuickSort)
+ *  @param liste Liste à trier
+ *  @return rien
+ */
+void listeTriRapide(Liste* liste) {
+  faireTriRapide(liste, liste->premier, liste->nbElt);
 }
 
-void listeTriInsertion(Liste* l) {
+void listeTriInsertion(Liste* liste) {
   /*
     int i,j;
     int cle;
@@ -187,20 +191,20 @@ void listeTriInsertion(Liste* l) {
    */
 }
 
-void listeVider(Liste* l) {
-  Element* e = l->premier;
+void listeVider(Liste* liste) {
+  Element* elem = liste->premier;
   Element* suiv;
 
-  while (e != NULL) {
-    suiv = e->suivant;
-    free(e);
-    e = suiv;
+  while (elem != NULL) {
+    suiv = elem->suivant;
+    free(elem);
+    elem = suiv;
   }
 }
 
-void listeDetruire(Liste* l) {
-  listeVider(l);
-  free(l);
+void listeDetruire(Liste* liste) {
+  listeVider(liste);
+  free(liste);
 }
 
 
@@ -219,11 +223,11 @@ static void permuterElements(Element* e1, Element* e2) {
 }
 
 /* -- faireQSort
- * l: liste à trier
+ * liste: liste à trier
  * noeud: pointeur vers le premier element de la liste à trier
  * nbElements: nombre d'éléments de cette liste
  */
-static void faireTriRapide(Liste* l, Element* noeud, int nbElements) {
+static void faireTriRapide(Liste* liste, Element* noeud, int nbElements) {
   if (nbElements > 1) {
     /* -- variables
      * i : pointeur pour le parcours de liste
@@ -248,7 +252,7 @@ static void faireTriRapide(Liste* l, Element* noeud, int nbElements) {
 
     while (pos_i < nbElements) {
       /* i '<' pivot */
-      if (l->comparer(i->reference, pivot->reference) < 0) {
+      if (liste->comparer(i->reference, pivot->reference) < 0) {
         /* Incrementer n (et donc deplacer j) */
         j = j->suivant;
         n++;
@@ -268,9 +272,9 @@ static void faireTriRapide(Liste* l, Element* noeud, int nbElements) {
       permuterElements(pivot, j);
     }
 
-    /* Et on applique l'algorithme pour chaque partie de la liste */
-    faireTriRapide(l, noeud, n);
-    faireTriRapide(l, j->suivant, nbElements - 1 - n);
+    /* Et on applique liste'algorithme pour chaque partie de la liste */
+    faireTriRapide(liste, noeud, n);
+    faireTriRapide(liste, j->suivant, nbElements - 1 - n);
   }
 }
 

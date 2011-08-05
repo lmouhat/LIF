@@ -145,6 +145,7 @@ void testGraphe(void) {
 void testTable(void) {
   Table* table;
   Test* test;
+  Test* tmp;
   int retour;
   int i;
   
@@ -165,6 +166,12 @@ void testTable(void) {
   test = nouveau("kikoo", 7, 6.19);
   retour = tableAjouter(table, test);
   
+  test = nouveau("pladamousse", 9, 5.14);
+  retour = tableAjouter(table, test);
+  
+  test = nouveau("carotte", 9, 5.14);
+  retour = tableAjouter(table, test);
+  
   test = nouveau("tomate", 9, 5.14);
   retour = tableAjouter(table, test);
   
@@ -175,19 +182,32 @@ void testTable(void) {
   tableAfficher(table);
   
   printf("\nxx) Recherche sequentielle de l'element tomate \n");
-  test = nouveau("tomate", 0, 0.0);
-  retour = tableRechercheSeq(table, test);
-  if(retour < 0) {
+  tmp = nouveau("tomate", 0, 0.0);
+  test = tableRechercheSeq(table, tmp);
+  free(tmp);
+  if(test == NULL) {
     printf("Element non trouve !\n");
   } else {
-    printf("Element trouve, position : %d \n", retour);
+    printf("Element trouve, adresse : 0x%x \n", (unsigned int) test);
     printf("Affichage de l'element : ");
-    affTest(tableElement(table, retour));
+    affTest(test);
   }
   
-  printf("\nxx) Tri de la table \n");
+  printf("\nxx) Tri par insertion de la table \n");
   tableTriInsertion(table);
   tableAfficher(table);
+  
+  printf("\nxx) Recherche dichotomique de l'element poivron \n");
+  tmp = nouveau("poivron", 0, 0.0);
+  test = tableRechercheDicho(table, tmp);
+  free(tmp);
+  if(test == NULL) {
+    printf("Element non trouve !\n");
+  } else {
+    printf("Element trouve, adresse : 0x%x \n", (unsigned int) test);
+    printf("Affichage de l'element : ");
+    affTest(test);
+  }
   
   printf("\nxx) Destruction de la table\n");
   for(i=0; i<table->n; i++) {

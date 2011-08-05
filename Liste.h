@@ -41,26 +41,26 @@ typedef struct s_Liste Liste;
  * Les fonctions publiques
  */
 
-void listeInit(Liste* l, int type, char* (*toString) (Objet*), \
+void listeInit(Liste* liste, int type, char* (*toString) (Objet*), \
       int (*comparer) (Objet*, Objet*));
-void listeInitDefaut(Liste* l);
+void listeInitDefaut(Liste* liste);
 Liste* listeCreer(int type, char* (*toString) (Objet*), \
         int (*comparer) (Objet*, Objet*));
 Liste* listeCreerDefaut(void);
-void listeAjouterFin(Liste* l, Objet* objet);
-void listeAjouterDebut(Liste* l, Objet* objet);
-void listeInsererApres(Liste* l, Objet* objet, Element* apres);
-int listeNbElt(Liste* l);
-int listeVide(Liste* l);
-Objet* listeChercherObjet(Liste* l, Objet* objet);
-void listeAfficherGD(Liste* l);
-void listeAfficherDG(Liste* l);
-Objet* listeExtraireDebut(Liste* l);
-Objet* listeExtraireFin(Liste* l);
-void listeTriInsertion(Liste* l);
-void listeTriRapide(Liste* l);
-void listeVider(Liste* l);
-void listeDetruire(Liste* l);
+void listeAjouterFin(Liste* liste, Objet* objet);
+void listeAjouterDebut(Liste* liste, Objet* objet);
+void listeInsererApres(Liste* liste, Objet* objet, Element* apres);
+int listeNbElt(Liste* liste);
+int listeVide(Liste* liste);
+Objet* listeChercherObjet(Liste* liste, Objet* objet);
+void listeAfficherGD(Liste* liste);
+void listeAfficherDG(Liste* liste);
+Objet* listeExtraireDebut(Liste* liste);
+Objet* listeExtraireFin(Liste* liste);
+void listeTriInsertion(Liste* liste);
+void listeTriRapide(Liste* liste);
+void listeVider(Liste* liste);
+void listeDetruire(Liste* liste);
 
 
 #endif	/* LISTE_H */

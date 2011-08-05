@@ -44,8 +44,8 @@ int tableTaille(Table* table);
 Objet* tableElement(Table* table, int pos);
 
 /* recherche */
-int tableRechercheSeq(Table* table, Objet* objet);
-int tableRechercheDicho(Table* table, Objet* objet);
+Objet* tableRechercheSeq(Table* table, Objet* objet);
+Objet* tableRechercheDicho(Table* table, Objet* objet);
 
 /* affichage et tri */
 void tableAfficher(Table* table);
