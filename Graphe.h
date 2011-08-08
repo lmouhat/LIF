@@ -24,7 +24,7 @@ struct s_Noeud {
   /** identifiant du noeud */
   int id;
   /** liste des relations (s_Arc) de ce noeud */
-  Liste liste;
+  Liste* liste;
 };
 
 /** @typedef Noeud
@@ -72,6 +72,13 @@ Graphe* grapheCreer(int nMax, int value, char* (*toString) (Objet*), \
         int (*comparer) (Objet*, Objet*));
 Graphe* grapheCreerDefaut(int nMax, int value);
 void grapheDetruire(Graphe* graphe);
+
+/* opérations élémentaires */
+void grapheAjouterSommet(Graphe* graphe, Objet* objet);
+void grapheAjouterArc(Graphe* graphe, Objet* init, Objet* term, int cout);
+Noeud* grapheSommet(Graphe* graphe, int n);
+Objet* grapheObjet(Graphe* graphe, int n);
+int grapheNbSommets(Graphe* graphe);
 
 
 

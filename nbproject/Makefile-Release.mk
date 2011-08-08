@@ -34,8 +34,8 @@ OBJECTDIR=${CND_BUILDDIR}/${CND_CONF}/${CND_PLATFORM}
 
 # Object Files
 OBJECTFILES= \
-	${OBJECTDIR}/Graphe.o \
 	${OBJECTDIR}/Tri.o \
+	${OBJECTDIR}/Graphe.o \
 	${OBJECTDIR}/Liste.o \
 	${OBJECTDIR}/main.o \
 	${OBJECTDIR}/Table.o
@@ -65,15 +65,15 @@ ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lif: ${OBJECTFILES}
 	${MKDIR} -p ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}
 	${LINK.c} -o ${CND_DISTDIR}/${CND_CONF}/${CND_PLATFORM}/lif ${OBJECTFILES} ${LDLIBSOPTIONS} 
 
-${OBJECTDIR}/Graphe.o: Graphe.c 
-	${MKDIR} -p ${OBJECTDIR}
-	${RM} $@.d
-	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Graphe.o Graphe.c
-
 ${OBJECTDIR}/Tri.o: Tri.c 
 	${MKDIR} -p ${OBJECTDIR}
 	${RM} $@.d
 	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Tri.o Tri.c
+
+${OBJECTDIR}/Graphe.o: Graphe.c 
+	${MKDIR} -p ${OBJECTDIR}
+	${RM} $@.d
+	$(COMPILE.c) -O2 -MMD -MP -MF $@.d -o ${OBJECTDIR}/Graphe.o Graphe.c
 
 ${OBJECTDIR}/Liste.o: Liste.c 
 	${MKDIR} -p ${OBJECTDIR}

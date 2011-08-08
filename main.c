@@ -32,21 +32,30 @@ Test* nouveau(char* mot, int entier, float reel) {
 }
 
 /* fournir les caractéristiques d'une Test */
-char* toStringTest(Test* t) {
+char* toStringTest(Objet* objet) {
+  Test* test = objet;
+  return test->mot;
+}
+
+char* toStringSommet(Objet* objet) {
+  Noeud* sommet = objet;
+  Test* t = sommet->objet;
   return t->mot;
 }
 
-char* toStringTestObjet(Objet* objet) {
-  return toStringTest((Test*) objet);
-}
-
 /* comparer deux personnes fournir <0 si p1 < p2; 0 si p1=p2; >0 sinon */
-int comparerTest(Test* t1, Test* t2) {
+int comparerTest(Objet* objet1, Objet* objet2) {
+  Test* t1 = objet1;
+  Test* t2 = objet2;
   return strcmp(t1->mot, t2->mot);
 }
 
-int comparerTestObjet(Objet* objet1, Objet* objet2) {
-  return comparerTest((Test*) objet1, (Test*) objet2);
+int comparerSommet(Objet* objet1, Objet* objet2) {
+  Noeud* s1 = objet1;
+  Noeud* s2 = objet2;
+  Test* t1 = s1->objet;
+  Test* t2 = s2->objet;
+  return strcmp(t1->mot, t2->mot);
 }
 
 void affTest(Test* t) {
@@ -64,7 +73,7 @@ void testListe(void) {
   Test* test;
   Test* recherche;
   
-  liste = listeCreer(NONORDONNE, toStringTestObjet, comparerTestObjet);
+  liste = listeCreer(NONORDONNE, toStringTest, comparerTest);
   
   test = nouveau("test", 12, 123.677);
   listeAjouterDebut(liste, test);
@@ -141,11 +150,43 @@ void testTri(void) {
 
 void testGraphe(void) {
   Graphe* graphe;
+  Test* a; Test* b; Test* c;
+  Test* tmp;
+  int i;
   
   printf("=== TEST GRAPHE ===\n\n");
   
-  printf("\n01) Création d'un graphe, capacite 25 non value \n");
-  graphe = grapheCreerDefaut(25, 0);
+  printf("\n01) Création d'un graphe, capacité 25, valué \n");
+  graphe = grapheCreer(25, 1, toStringSommet, comparerSommet);
+  
+  printf("\nxx) Ajout de noeuds \n");
+  a = nouveau("kikoo", 5, 1.2);
+  grapheAjouterSommet(graphe, a);
+  
+  b = nouveau("lol", 6, 1.3);
+  grapheAjouterSommet(graphe, b);
+  
+  c = nouveau("pastèque", 7, 5.9);
+  grapheAjouterSommet(graphe, c);
+  
+  printf("\nxx) Ajout des arcs \n");
+  grapheAjouterArc(graphe, a, b, 15);
+  grapheAjouterArc(graphe, a, a, 0);
+  grapheAjouterArc(graphe, a, c, 22);
+  grapheAjouterArc(graphe, b, c, 11);
+  grapheAjouterArc(graphe, b, a, 13);
+  grapheAjouterArc(graphe, c, b, 500);
+  
+  
+  printf("\nxx) Destruction du graphe et de ses données \n");
+  printf("On détruit les données encapsulées : \n");
+  for(i=0; i<grapheNbSommets(graphe); i++) {
+    tmp = grapheObjet(graphe, i);
+    printf(" - suppression de : ", i);
+    affTest(tmp);
+    free(tmp);
+  }
+  printf("et le graphe en lui même. \n");
   grapheDetruire(graphe);
 }
 
@@ -158,7 +199,7 @@ void testTable(void) {
   
   printf("=== TEST TABLE ===\n");
   
-  table = tableCreer(25, toStringTestObjet, comparerTestObjet);
+  table = tableCreer(25, toStringTest, comparerTest);
 
   test = nouveau("test", 12, 123.677);
   retour = tableAjouter(table, test);
@@ -235,9 +276,16 @@ void testTable(void) {
 int main(int argc, char** argv) {
 /*
   testTri();
+ */
+  
+/*
   testListe();
+*/
+  
+/*
   testTable();
 */
+  
   testGraphe();
   return (EXIT_SUCCESS);
 }
