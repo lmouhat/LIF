@@ -80,6 +80,9 @@ Noeud* grapheSommet(Graphe* graphe, int n);
 Objet* grapheObjet(Graphe* graphe, int n);
 int grapheNbSommets(Graphe* graphe);
 
+/* entrée / sortie */
+void grapheVersDot(Graphe* graphe);
+
 
 
 #endif	/* GRAPHE_H */

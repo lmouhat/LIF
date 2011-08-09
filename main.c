@@ -150,8 +150,7 @@ void testTri(void) {
 
 void testGraphe(void) {
   Graphe* graphe;
-  Test* a; Test* b; Test* c;
-  Test* tmp;
+  Test* tmp, * a, * b, * c, * d, * e;
   int i;
   
   printf("=== TEST GRAPHE ===\n\n");
@@ -169,20 +168,31 @@ void testGraphe(void) {
   c = nouveau("pastèque", 7, 5.9);
   grapheAjouterSommet(graphe, c);
   
+  d = nouveau("carotte", 8, 2.3);
+  grapheAjouterSommet(graphe, d);
+  
+  e = nouveau("melon", 9, 3.2);
+  grapheAjouterSommet(graphe, e);
+  
   printf("\nxx) Ajout des arcs \n");
   grapheAjouterArc(graphe, a, b, 15);
-  grapheAjouterArc(graphe, a, a, 0);
+  grapheAjouterArc(graphe, a, a, 1);
   grapheAjouterArc(graphe, a, c, 22);
   grapheAjouterArc(graphe, b, c, 11);
   grapheAjouterArc(graphe, b, a, 13);
-  grapheAjouterArc(graphe, c, b, 500);
+  grapheAjouterArc(graphe, c, b, 50);
+  grapheAjouterArc(graphe, d, e, 5);
+  grapheAjouterArc(graphe, c, e, 9);
   
+  
+  printf("\nxx) Enregistrement dans graphe.dot \n");
+  grapheVersDot(graphe);
   
   printf("\nxx) Destruction du graphe et de ses données \n");
   printf("On détruit les données encapsulées : \n");
   for(i=0; i<grapheNbSommets(graphe); i++) {
     tmp = grapheObjet(graphe, i);
-    printf(" - suppression de : ", i);
+    printf(" - suppression de : ");
     affTest(tmp);
     free(tmp);
   }

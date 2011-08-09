@@ -128,6 +128,11 @@ Noeud* grapheSommet(Graphe* graphe, int n) {
   return graphe->table->element[n];
 }
 
+/** @brief Récupère l'objet contenu dans le nième sommet du graphe
+ *  @param graphe Le graphe
+ *  @param n L'id du sommet
+ *  @return L'objet encapsulé
+ */
 Objet* grapheObjet(Graphe* graphe, int n) {
   Noeud* tmp = graphe->table->element[n];
   return tmp->objet;
@@ -139,6 +144,44 @@ Objet* grapheObjet(Graphe* graphe, int n) {
  */
 int grapheNbSommets(Graphe* graphe) {
   return graphe->table->n;
+}
+
+/** @brief Ecrit le graphe au format DOT de GraphViz
+ *  @param graphe Le graphe à exporter
+ *  @return rien
+ */
+void grapheVersDot(Graphe* graphe) {
+  FILE* fichier;
+  Noeud* sommet;
+  Arc* arc;
+  int i, j, nb;
+  
+  fichier = fopen("graphe.dot", "w");
+  if(fichier == NULL) {
+    printf("Erreur : impossible d'ouvrir le fichier \n");
+    exit(EXIT_FAILURE);
+  }
+  
+  fprintf(fichier, "digraph G {");
+  for(i=0; i<grapheNbSommets(graphe); i++) {
+    sommet = grapheSommet(graphe, i);
+    nb = listeNbElt(sommet->liste);
+    for(j=0; j<nb; j++) {
+      arc = listeLireElement(sommet->liste, j);
+      fprintf(fichier, "\n\t%s -> %s", graphe->table->toString(sommet), \
+              graphe->table->toString(arc->extremite));
+      if(graphe->value == 1 && arc->cout >= 0) {
+        fprintf(fichier, " [label=%d]", arc->cout);
+      }
+      fprintf(fichier, ";");
+    }
+    
+  }
+
+  fprintf(fichier, "\n}\n");
+  
+  printf("Ecriture réussie ! \n");
+  fclose(fichier);
 }
 
 /*
