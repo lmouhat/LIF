@@ -12,7 +12,6 @@ static char* toString(Objet* objet);
 static void faireTriRapide(Liste* liste, Element* pNoeud, int n_elements);
 static void permuterElements(Element* e1, Element* e2);
 
-
 /*
  * Fonctions publiques
  */
@@ -113,6 +112,26 @@ Objet* listeExtraireDebut(Liste* liste) {
   return obj;
 }
 
+/** @brief Retourne le nième objet de la liste
+ *  @param liste
+ *  @param n Le nième objet
+ *  @return Pointeur vers l'objet, NULL si échec
+ */
+Objet* listeLireElement(Liste* liste, int n) {
+  Element* p = liste->premier;
+  Objet* obj = NULL;
+  int i;
+
+  if (n <= listeNbElt(liste)) {
+    for (i = 0; i < n; i++) {
+      p = p->suivant;
+    }
+    obj = p->reference;
+  }
+
+  return obj;
+}
+
 Objet* listeExtraireFin(Liste* liste) {
   Element* p = liste->dernier;
   Objet* obj = liste->dernier->reference;
@@ -145,7 +164,7 @@ Objet* listeChercherObjet(Liste* liste, Objet* objet) {
 }
 
 void listeAfficherGD(Liste* liste) {
-  Element* elem =  liste->premier;
+  Element* elem = liste->premier;
 
   printf("%d elements : ", listeNbElt(liste));
 
@@ -207,7 +226,6 @@ void listeDetruire(Liste* liste) {
   free(liste);
 }
 
-
 /*
  * Fonctions locales
  */
@@ -258,7 +276,7 @@ static void faireTriRapide(Liste* liste, Element* noeud, int nbElements) {
         n++;
 
         /* Ce serait une perte de temps de permuter i avec lui-meme */
-        if (pos_i != n) { 
+        if (pos_i != n) {
           permuterElements(i, j);
         }
       }

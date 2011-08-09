@@ -55,6 +55,7 @@ int listeVide(Liste* liste);
 Objet* listeChercherObjet(Liste* liste, Objet* objet);
 void listeAfficherGD(Liste* liste);
 void listeAfficherDG(Liste* liste);
+Objet* listeLireElement(Liste* liste, int n);
 Objet* listeExtraireDebut(Liste* liste);
 Objet* listeExtraireFin(Liste* liste);
 void listeTriInsertion(Liste* liste);
