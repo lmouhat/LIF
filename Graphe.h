@@ -19,12 +19,17 @@
 struct s_Noeud {
   /** pointeur vers un objet */
   Objet* objet;
-  /** {0;1} si le noeud est marque ou pas (parcours de graphe) */
-  int marque;
-  /** identifiant du noeud */
-  int id;
   /** liste des relations (s_Arc) de ce noeud */
   Liste* liste;
+  /** identifiant du noeud */
+  int id;
+  /** couleur du marquage (parcours de graphe)
+   *  0 : pas visité, 1 : en cours de visite, 2 : visité */
+  int couleur;
+  /** distance depuis le noeud de départ (parcours de graphe) */
+  int distance;
+  /** pointeur vers le noeud parent (parcours de graphe) */
+  struct s_Noeud* parent;
 };
 
 /** @typedef Noeud
@@ -80,8 +85,12 @@ Noeud* grapheSommet(Graphe* graphe, int n);
 Objet* grapheObjet(Graphe* graphe, int n);
 int grapheNbSommets(Graphe* graphe);
 
+/* algorithmes */
+void grapheParcoursLargeur(Graphe* graphe, Noeud* depart);
+
 /* entrée / sortie */
 void grapheVersDot(Graphe* graphe);
+void grapheAfficher(Graphe* graphe);
 
 
 

@@ -72,7 +72,8 @@ void grapheAjouterSommet(Graphe* graphe, Objet* objet) {
   int retour = 0;
   Noeud* noeud = malloc(sizeof (Noeud));
   noeud->objet = objet;
-  noeud->marque = 0;
+  noeud->couleur = 0;
+  noeud->distance = -1;
   noeud->id = tableTaille(graphe->table);
   noeud->liste = listeCreerDefaut();
   retour = tableAjouter(graphe->table, noeud);
@@ -175,13 +176,85 @@ void grapheVersDot(Graphe* graphe) {
       }
       fprintf(fichier, ";");
     }
-    
   }
 
   fprintf(fichier, "\n}\n");
   
   printf("Ecriture réussie ! \n");
   fclose(fichier);
+}
+
+/** @brief Parcours en largeur le graphe
+ *  @param graphe Le graphe à exporter
+ *  @return rien
+ */
+void grapheParcoursLargeur(Graphe* graphe, Noeud* depart) {
+  Noeud* sommet;
+  Arc* arc;
+  int i;
+  Liste* file;
+  
+  for(i=0; i<grapheNbSommets(graphe); i++) {
+    sommet = grapheSommet(graphe, i);
+    sommet->couleur = 0;
+    sommet->distance = -1;
+    sommet->parent = NULL;
+  }
+  
+  file = listeCreerDefaut();
+  depart->couleur = 1;
+  depart->distance = 0;
+  depart->parent = NULL;
+  listeAjouterDebut(file, depart);
+  
+  while(listeVide(file) == 0) {
+    sommet = listeExtraireFin(file);
+    for(i=0; i<listeNbElt(sommet->liste); i++) {
+      arc = listeLireElement(sommet->liste, i);
+      if(arc->extremite->couleur == 0) {
+        arc->extremite->couleur = 1;
+        if(graphe->value == 0) {
+          arc->extremite->distance = sommet->distance + 1;
+        } else {
+          arc->extremite->distance = sommet->distance + arc->cout;
+        }
+        arc->extremite->parent = sommet;
+        listeAjouterDebut(file, arc->extremite);
+      }
+    }
+    sommet->couleur = 2;
+  }
+  
+  listeDetruire(file);
+}
+
+/** @brief Affichage du graphe
+ *  @param graphe Le graphe à afficher
+ *  @return rien
+ */
+void grapheAfficher(Graphe* graphe) {
+  Noeud* sommet;
+  Arc* arc;
+  int i, j;
+  char* parent;
+  
+  printf("Affichage du graphe : ");
+  for(i=0; i<grapheNbSommets(graphe); i++) {
+    sommet = grapheSommet(graphe, i);
+    if(sommet->parent != NULL) {
+      parent = graphe->table->toString(sommet->parent);
+    } else {
+      parent = "NULL";
+    }
+    printf("\n%s [dist:%d; coul=%d; parent=%s] : ", \
+            graphe->table->toString(sommet), \
+            sommet->distance, sommet->couleur, parent);
+    for(j=0; j<listeNbElt(sommet->liste); j++) {
+      arc = listeLireElement(sommet->liste, j);
+      printf("(%s) ", graphe->table->toString(arc->extremite));
+    }
+  }
+  printf("\n");
 }
 
 /*

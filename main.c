@@ -153,7 +153,7 @@ void testGraphe(void) {
   Test* tmp, * a, * b, * c, * d, * e;
   int i;
   
-  printf("=== TEST GRAPHE ===\n\n");
+  printf("=== TEST GRAPHE ===\n");
   
   printf("\n01) Création d'un graphe, capacité 25, valué \n");
   graphe = grapheCreer(25, 1, toStringSommet, comparerSommet);
@@ -184,6 +184,9 @@ void testGraphe(void) {
   grapheAjouterArc(graphe, d, e, 5);
   grapheAjouterArc(graphe, c, e, 9);
   
+  printf("\nxx) Parcours en largeur depuis kikoo \n");
+  grapheParcoursLargeur(graphe, grapheSommet(graphe, 0));
+  grapheAfficher(graphe);
   
   printf("\nxx) Enregistrement dans graphe.dot \n");
   grapheVersDot(graphe);
