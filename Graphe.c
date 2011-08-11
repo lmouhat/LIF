@@ -257,6 +257,17 @@ void grapheAfficher(Graphe* graphe) {
   printf("\n");
 }
 
+void grapheAfficherChemin(Graphe* graphe, Noeud* depart, Noeud* arrivee) {
+  if(depart == arrivee) {
+    printf("%s", graphe->table->toString(depart));
+  } else if (arrivee->parent == NULL) {
+    printf("Il n'y a pas de chemin entre les 2 sommets.");
+  } else {
+    grapheAfficherChemin(graphe, depart, arrivee->parent);
+    printf(" -> %s", graphe->table->toString(arrivee));
+  }
+}
+
 /*
  * Fonctions locales
  */

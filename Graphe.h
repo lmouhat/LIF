@@ -91,6 +91,7 @@ void grapheParcoursLargeur(Graphe* graphe, Noeud* depart);
 /* entrée / sortie */
 void grapheVersDot(Graphe* graphe);
 void grapheAfficher(Graphe* graphe);
+void grapheAfficherChemin(Graphe* graphe, Noeud* depart, Noeud* arrivee);
 
 
 
