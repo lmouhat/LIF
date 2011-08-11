@@ -163,6 +163,9 @@ Objet* listeChercherObjet(Liste* liste, Objet* objet) {
   return trouve == 1 ? obj : 0;
 }
 
+/** @brief Affiche la liste de gauche à droite
+ *  @param liste
+ */
 void listeAfficherGD(Liste* liste) {
   Element* elem = liste->premier;
 
@@ -174,6 +177,9 @@ void listeAfficherGD(Liste* liste) {
   }
 }
 
+/** @brief Affiche la liste de droite à gauche
+ *  @param liste
+ */
 void listeAfficherDG(Liste* liste) {
   Element* elem = liste->dernier;
 
@@ -210,6 +216,9 @@ void listeTriInsertion(Liste* liste) {
    */
 }
 
+/** @brief Vidage de la liste
+ *  @param liste
+ */
 void listeVider(Liste* liste) {
   Element* elem = liste->premier;
   Element* suiv;
@@ -221,6 +230,9 @@ void listeVider(Liste* liste) {
   }
 }
 
+/** @brief Vidage et destruction de la liste
+ *  @param liste
+ */
 void listeDetruire(Liste* liste) {
   listeVider(liste);
   free(liste);
