@@ -16,6 +16,12 @@ static void permuterElements(Element* e1, Element* e2);
  * Fonctions publiques
  */
 
+/** @brief Initialise une liste
+ *  @param liste La liste
+ *  @param type Type de la liste
+ *  @param toString Pointeur vers la fonction d'affichage
+ *  @param comparer Pointeur vers la fonction de comparaison
+ */
 void listeInit(Liste* liste, int type, char* (*toString) (Objet*), \
       int (*comparer) (Objet*, Objet*)) {
   liste->premier = NULL;
@@ -27,10 +33,19 @@ void listeInit(Liste* liste, int type, char* (*toString) (Objet*), \
   liste->comparer = comparer;
 }
 
+/** @brief Initialise une liste par défaut (liste non ordonnée)
+ *  @param liste La liste
+ */
 void listeInitDefaut(Liste* liste) {
   listeInit(liste, NONORDONNE, toString, comparerChaine);
 }
 
+/** @brief Crée une liste et l'initialise
+ *  @param type Type de la liste
+ *  @param toString Pointeur vers la fonction d'affichage
+ *  @param comparer Pointeur vers la fonction de comparaison
+ *  @return La liste créée et initialisée
+ */
 Liste* listeCreer(int type, char* (*toString) (Objet*), \
         int (*comparer) (Objet*, Objet*)) {
   Liste* liste = malloc(sizeof (Liste));
@@ -38,12 +53,19 @@ Liste* listeCreer(int type, char* (*toString) (Objet*), \
   return liste;
 }
 
+/** @brief Crée une liste et l'initialise avec les valeurs par défaut
+ *  @return La liste créée et initialisée par défaut
+ */
 Liste* listeCreerDefaut(void) {
   Liste* liste = malloc(sizeof (Liste));
   listeInitDefaut(liste);
   return liste;
 }
 
+/** @brief Ajoute un objet en fin de liste
+ *  @param liste
+ *  @param objet Pointeur vers l'objet à ajouter
+ */
 void listeAjouterFin(Liste* liste, Objet* objet) {
   Element* elem = malloc(sizeof (Element));
   elem->reference = objet;
@@ -59,6 +81,10 @@ void listeAjouterFin(Liste* liste, Objet* objet) {
   liste->nbElt++;
 }
 
+/** @brief Ajoute un objet en début de liste
+ *  @param liste
+ *  @param objet Pointeur vers l'objet à ajouter
+ */
 void listeAjouterDebut(Liste* liste, Objet* objet) {
   Element* elem = malloc(sizeof (Element));
   elem->reference = objet;
@@ -74,6 +100,11 @@ void listeAjouterDebut(Liste* liste, Objet* objet) {
   liste->nbElt++;
 }
 
+/** @brief Insérer un objet après un élément spécifié
+ *  @param liste
+ *  @param objet Pointeur vers l'objet à ajouter
+ *  @param apres Pointeur vers l'élement
+ */
 void listeInsererApres(Liste* liste, Objet* objet, Element* apres) {
   Element* elem = malloc(sizeof (Element));
   elem->reference = objet;
@@ -83,10 +114,18 @@ void listeInsererApres(Liste* liste, Objet* objet, Element* apres) {
   liste->nbElt++;
 }
 
+/** @brief Retourne le nombre d'éléments de la liste
+ *  @param liste
+ *  @return Nombre d'éléments
+ */
 int listeNbElt(Liste* liste) {
   return liste->nbElt;
 }
 
+/** @brief Teste si la liste est vide
+ *  @param liste
+ *  @return 1 si vrai (liste vide), 0 si faux (liste non vide)
+ */
 int listeVide(Liste* liste) {
   if (listeNbElt(liste) > 0) {
     return 0;
@@ -94,6 +133,10 @@ int listeVide(Liste* liste) {
   return 1;
 }
 
+/** @brief Extraie le premier élément de la liste
+ *  @param liste
+ *  @return Pointeur vers l'objet, NULL si échec
+ */
 Objet* listeExtraireDebut(Liste* liste) {
   Element* p = liste->premier;
   Objet* obj = liste->premier->reference;
@@ -132,6 +175,10 @@ Objet* listeLireElement(Liste* liste, int n) {
   return obj;
 }
 
+/** @brief Extraie le dernier élément de la liste
+ *  @param liste
+ *  @return Pointeur vers l'objet, NULL si échec
+ */
 Objet* listeExtraireFin(Liste* liste) {
   Element* p = liste->dernier;
   Objet* obj = liste->dernier->reference;
@@ -150,6 +197,11 @@ Objet* listeExtraireFin(Liste* liste) {
   return obj;
 }
 
+/** @brief Recherche séquentielle d'un objet dans la liste
+ *  @param liste La liste parcourue
+ *  @param objet L'objet recherché
+ *  @return Pointeur vers l'objet trouvé s'il existe, sinon NULL
+ */
 Objet* listeChercherObjet(Liste* liste, Objet* objet) {
   int trouve = 0;
   Objet* obj;
@@ -160,7 +212,7 @@ Objet* listeChercherObjet(Liste* liste, Objet* objet) {
     trouve = liste->comparer(objet, obj) == 0;
     elem = elem->suivant;
   }
-  return trouve == 1 ? obj : 0;
+  return trouve == 1 ? obj : NULL;
 }
 
 /** @brief Affiche la liste de gauche à droite
@@ -193,12 +245,15 @@ void listeAfficherDG(Liste* liste) {
 
 /** @brief Tri de la liste par tri rapide (QuickSort)
  *  @param liste Liste à trier
- *  @return rien
  */
 void listeTriRapide(Liste* liste) {
   faireTriRapide(liste, liste->premier, liste->nbElt);
 }
 
+/** @brief Tri de la liste par insertion
+ *  @param liste
+ *  @todo A programmer
+ */
 void listeTriInsertion(Liste* liste) {
   /*
     int i,j;
@@ -302,7 +357,7 @@ static void faireTriRapide(Liste* liste, Element* noeud, int nbElements) {
       permuterElements(pivot, j);
     }
 
-    /* Et on applique liste'algorithme pour chaque partie de la liste */
+    /* Et on applique l'algorithme pour chaque partie de la liste */
     faireTriRapide(liste, noeud, n);
     faireTriRapide(liste, j->suivant, nbElements - 1 - n);
   }
