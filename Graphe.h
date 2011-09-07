@@ -26,8 +26,12 @@ struct s_Noeud {
   /** couleur du marquage (parcours de graphe)
    *  0 : pas visité, 1 : en cours de visite, 2 : visité */
   int couleur;
-  /** distance depuis le noeud de départ (parcours de graphe) */
+  /** distance depuis le noeud de départ (parcours en largeur) */
   int distance;
+  /** date de découverte (parcours en profondeur) */
+  int dateDecouverte;
+  /** date de fin (parcours en profondeur) */
+  int dateFin;
   /** pointeur vers le noeud parent (parcours de graphe) */
   struct s_Noeud* parent;
 };
@@ -87,6 +91,7 @@ int grapheNbSommets(Graphe* graphe);
 
 /* algorithmes */
 void grapheParcoursLargeur(Graphe* graphe, Noeud* depart);
+void grapheParcoursProfondeur(Graphe* graphe);
 
 /* entrée / sortie */
 void grapheVersDot(Graphe* graphe);

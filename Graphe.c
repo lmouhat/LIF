@@ -4,11 +4,18 @@
 #include "Graphe.h"
 
 /*
+ * Variables globales
+ */
+
+int date;
+
+/*
  * Déclaration des fonctions locales
  */
 
 static int comparerChaineSommet(Objet* objet1, Objet* objet2);
 static char* toStringSommet(Objet* objet);
+static void parcoursProfondeur(Noeud* sommet);
 
 /*
  * Fonctions publiques
@@ -74,6 +81,7 @@ void grapheAjouterSommet(Graphe* graphe, Objet* objet) {
   noeud->objet = objet;
   noeud->couleur = 0;
   noeud->distance = -1;
+  noeud->dateDecouverte = noeud->dateFin = -1;
   noeud->id = tableTaille(graphe->table);
   noeud->liste = listeCreerDefaut();
   retour = tableAjouter(graphe->table, noeud);
@@ -246,8 +254,9 @@ void grapheAfficher(Graphe* graphe) {
     } else {
       parent = "NULL";
     }
-    printf("\n%s [dist:%d; coul=%d; parent=%s] : ", \
+    printf("\n%s [decouv:%d fin:%d dist:%d coul=%d parent=%s] : ", \
             graphe->table->toString(sommet), \
+            sommet->dateDecouverte, sommet->dateFin, \
             sommet->distance, sommet->couleur, parent);
     for(j=0; j<listeNbElt(sommet->liste); j++) {
       arc = listeLireElement(sommet->liste, j);
@@ -257,6 +266,12 @@ void grapheAfficher(Graphe* graphe) {
   printf("\n");
 }
 
+/** @brief Affichage du chemin entre 2 sommets, après un parcours en largeur
+ *  @param graphe
+ *  @param depart Sommet de départ
+ *  @param arrivee Sommet d'arrivée
+ *  @return rien
+ */
 void grapheAfficherChemin(Graphe* graphe, Noeud* depart, Noeud* arrivee) {
   if(depart == arrivee) {
     printf("%s", graphe->table->toString(depart));
@@ -267,6 +282,27 @@ void grapheAfficherChemin(Graphe* graphe, Noeud* depart, Noeud* arrivee) {
     printf(" -> %s", graphe->table->toString(arrivee));
   }
 }
+
+void grapheParcoursProfondeur(Graphe* graphe) {
+  Noeud* sommet;
+  int i;
+  
+  for(i=0; i<grapheNbSommets(graphe); i++) {
+    sommet = grapheSommet(graphe, i);
+    sommet->couleur = 0;
+    sommet->parent = NULL;
+  }
+  
+  date = 0;
+  
+  for(i=0; i<grapheNbSommets(graphe); i++) {
+    sommet = grapheSommet(graphe, i);
+    if(sommet->couleur == 0) {
+      parcoursProfondeur(sommet);
+    }
+  }
+}
+
 
 /*
  * Fonctions locales
@@ -282,4 +318,26 @@ static int comparerChaineSommet(Objet* objet1, Objet* objet2) {
 static char* toStringSommet(Objet* objet) {
   Noeud* sommet = objet;
   return (char*) sommet->objet;
+}
+
+/* effectue le parcours en profondeur */
+static void parcoursProfondeur(Noeud* sommet) {
+  Arc* arc;
+  int i;
+  
+  sommet->couleur = 1;
+  date++;
+  sommet->dateDecouverte = date;
+  
+  for(i=0; i<listeNbElt(sommet->liste); i++) {
+    arc = listeLireElement(sommet->liste, i);
+    if(arc->extremite->couleur == 0) {
+      arc->extremite->parent = sommet;
+      parcoursProfondeur(arc->extremite);
+    }
+  }
+  
+  sommet->couleur = 2;
+  date++;
+  sommet->dateFin = date;
 }
