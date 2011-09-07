@@ -43,7 +43,7 @@ char* toStringSommet(Objet* objet) {
   return t->mot;
 }
 
-/* comparer deux personnes fournir <0 si p1 < p2; 0 si p1=p2; >0 sinon */
+/* <0 si objet1 < objet2; 0 si objet1=objet2; >0 sinon */
 int comparerTest(Objet* objet1, Objet* objet2) {
   Test* t1 = objet1;
   Test* t2 = objet2;
@@ -73,8 +73,12 @@ void testListe(void) {
   Test* test;
   Test* recherche;
   
+  printf("=== TEST LISTE ===\n");
+  
+  printf("\n01) Création d'une liste non ordonnée\n");
   liste = listeCreer(NONORDONNE, toStringTest, comparerTest);
   
+  printf("\n02) Ajout d'éléments à la liste \n");
   test = nouveau("test", 12, 123.677);
   listeAjouterDebut(liste, test);
 
@@ -99,33 +103,40 @@ void testListe(void) {
   test =  nouveau("monster", 9, 0.67);
   listeAjouterFin(liste, test);
   
+  printf("\n03) Affiche de gauche à droite \n");
   listeAfficherGD(liste);
-  printf("\nAffichage de droite a gauche \n");
+  
+  printf("\n");
+  printf("\n04) Affichage de droite a gauche \n");
   listeAfficherDG(liste);
   
-  printf("\nTri par QuickSort : \n");
+  printf("\n");
+  printf("\n05) Tri par QuickSort : \n");
   listeTriRapide(liste);
   listeAfficherGD(liste);
   
+  printf("\n");
+  printf("\nxx) Extraction en début de liste : ");
   test = listeExtraireDebut(liste);
-  printf("\n\nExtraction debut de liste : ");
   affTest(test);
   free(test);
   listeAfficherGD(liste);
   
+  printf("\n");
+  printf("\nxx) Extraction en fin de liste : ");
   test = listeExtraireFin(liste);
-  printf("\nExtraction fin de liste : ");
   affTest(test);
   free(test);
   
+  printf("\nxx) Recherche séquentielle de l'objet \"kikoo\" ");
   recherche = nouveau("kikoo", 3, 12.1);
   test = listeChercherObjet(liste, recherche);
-  printf("Objet \"kikoo\" trouve : ");
+  printf("\nObjet \"kikoo\" trouve : ");
   affTest(test);
   free(recherche);
   
+  printf("\nxx) On affiche la liste, puis on extrait tout et destruction : \n");
   listeAfficherGD(liste);
-  printf("\nOn extrait tout : ");
   while(listeVide(liste) == 0) {
     test = listeExtraireDebut(liste);
     affTest(test);
@@ -186,6 +197,14 @@ void testGraphe(void) {
   
   printf("\nxx) Parcours en largeur depuis kikoo \n");
   grapheParcoursLargeur(graphe, grapheSommet(graphe, 0));
+  grapheAfficher(graphe);
+  
+  printf("\nxx) Affichage du chemin entre kikoo et melon \n");
+  grapheAfficherChemin(graphe, grapheSommet(graphe, 0), grapheSommet(graphe, 4));
+  printf("\n");
+  
+  printf("\nxx) Parcours en profondeur du graphe \n");
+  grapheParcoursProfondeur(graphe);
   grapheAfficher(graphe);
   
   printf("\nxx) Enregistrement dans graphe.dot \n");
@@ -291,15 +310,15 @@ int main(int argc, char** argv) {
   testTri();
  */
   
-/*
   testListe();
-*/
   
 /*
   testTable();
 */
   
+/*
   testGraphe();
+*/
   return (EXIT_SUCCESS);
 }
 
