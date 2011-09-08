@@ -11,6 +11,8 @@ static int comparerChaine(Objet* objet1, Objet* objet2);
 static char* toString(Objet* objet);
 static void faireTriRapide(Liste* liste, Element* pNoeud, int n_elements);
 static void permuterElements(Element* e1, Element* e2);
+static Objet* extraireObjet(Liste* liste, Element* elem);
+static void insererApres(Liste* liste, Objet* objet, Element* apres);
 
 /*
  * Fonctions publiques
@@ -37,7 +39,7 @@ void listeInit(Liste* liste, int type, char* (*toString) (Objet*), \
  *  @param liste La liste
  */
 void listeInitDefaut(Liste* liste) {
-  listeInit(liste, NONORDONNE, toString, comparerChaine);
+  listeInit(liste, NORMAL, toString, comparerChaine);
 }
 
 /** @brief Crée une liste et l'initialise
@@ -100,18 +102,34 @@ void listeAjouterDebut(Liste* liste, Objet* objet) {
   liste->nbElt++;
 }
 
-/** @brief Insérer un objet après un élément spécifié
+/** @brief Insérer un objet dans une liste triée
  *  @param liste
  *  @param objet Pointeur vers l'objet à ajouter
- *  @param apres Pointeur vers l'élement
+ *  @todo Corriger la fonction pour gérer l'ordre ASC (ok) ou DESC (pas ok)
  */
-void listeInsererApres(Liste* liste, Objet* objet, Element* apres) {
-  Element* elem = malloc(sizeof (Element));
-  elem->reference = objet;
-  elem->precedent = apres;
-  elem->suivant = apres->suivant;
-  apres->suivant = elem;
-  liste->nbElt++;
+void listeInsererTri(Liste* liste, Objet* objet) {
+  Element* i = liste->premier;
+  int ajout;
+  
+  if(listeVide(liste) == 1) {
+    listeAjouterDebut(liste, objet);
+  } else {
+    ajout = 0;
+    while(i != NULL && ajout == 0) {
+      if(liste->comparer(i->reference, objet) > 0) {
+        if(i->precedent == NULL) {
+          listeAjouterDebut(liste, objet);
+        } else {
+          insererApres(liste, objet, i->precedent);
+        }
+        ajout = 1;
+      }
+      i = i->suivant;
+    }
+    if(ajout == 0) {
+      listeAjouterFin(liste, objet);
+    }
+  } 
 }
 
 /** @brief Retourne le nombre d'éléments de la liste
@@ -160,7 +178,7 @@ Objet* listeExtraireDebut(Liste* liste) {
  *  @param n Le nième objet
  *  @return Pointeur vers l'objet, NULL si échec
  */
-Objet* listeLireElement(Liste* liste, int n) {
+Objet* listeLireObjet(Liste* liste, int n) {
   Element* p = liste->premier;
   Objet* obj = NULL;
   int i;
@@ -196,6 +214,36 @@ Objet* listeExtraireFin(Liste* liste) {
 
   return obj;
 }
+
+/** @brief Extraie l'objet après l'élément spécifié
+ *  @param liste
+ *  @param apres Element précédent celui à extraire
+ *  @return Pointeur vers l'objet, NULL si échec
+ *  @todo A effacer si inutile
+ */
+/*
+Objet* listeExtraireApres(Liste* liste, Element* apres) {
+  Element* elem;
+  
+  if(apres == NULL) {
+    listeExtraireDebut(liste);
+  } else {
+    elem = apres->suivant;
+    if(elem != NULL) {
+      apres->suivant = elem->suivant;
+      if(elem == liste->dernier) {
+        liste->dernier = apres;
+      }
+      liste->nbElt--;
+    }
+  }
+  if(elem != NULL) {
+    return elem->reference;
+  } else {
+    return NULL;
+  }
+}
+*/
 
 /** @brief Recherche séquentielle d'un objet dans la liste
  *  @param liste La liste parcourue
@@ -252,23 +300,32 @@ void listeTriRapide(Liste* liste) {
 
 /** @brief Tri de la liste par insertion
  *  @param liste
- *  @todo A programmer
  */
 void listeTriInsertion(Liste* liste) {
-  /*
-    int i,j;
-    int cle;
-  
-    for(j=1; j<sizeof; j++) {
-      cle = tab[j];
-      i = j-1;
-      while(i>=0 && tab[i] > cle) {
-        tab[i+1] = tab[i];
-        i--;
+  Element * i, * j, * suivant;
+  Objet* tmp;
+  int fait;
+
+  /* pour tous les éléments de la liste */
+  for(j=liste->premier->suivant; j!=NULL; j=suivant) {
+    suivant = j->suivant; /* on mémorise l'élement suivant */
+    fait = 0;
+    i = liste->premier;
+    /* on cherche à insérer notre élément */
+    while(i != j && fait == 0) {
+      if(liste->comparer(i->reference, j->reference) > 0) {
+        tmp = extraireObjet(liste, j);
+        /* ajout en tête sinon insertion */
+        if(i->precedent == NULL) { 
+          listeAjouterDebut(liste, tmp);
+        } else {
+          insererApres(liste, tmp, i->precedent);
+        }
+        fait = 1;
       }
-      tab[i+1] = cle;
+      i = i->suivant;
     }
-   */
+  }
 }
 
 /** @brief Vidage de la liste
@@ -298,12 +355,48 @@ void listeDetruire(Liste* liste) {
  */
 
 static void permuterElements(Element* e1, Element* e2) {
-  void* tmp;
+  Objet* tmp;
 
   if (e1 != NULL && e2 != NULL) {
     tmp = e1->reference;
     e1->reference = e2->reference;
     e2->reference = tmp;
+  }
+}
+
+static Objet* extraireObjet(Liste* liste, Element* elem) {
+  Objet* objet;
+  Element* tmp;
+  
+  if(elem == liste->premier) {
+    objet = listeExtraireDebut(liste);
+  } else if(elem == liste->dernier) {
+    objet = listeExtraireFin(liste);
+  } else {
+    objet = elem->reference;
+    tmp = elem->precedent;
+    elem->precedent->suivant = elem->suivant;
+    elem->suivant->precedent = tmp;
+    free(elem);
+    liste->nbElt--; 
+  }
+  
+  return objet;
+}
+
+static void insererApres(Liste* liste, Objet* objet, Element* apres) {
+  Element* elem;
+  
+  if(apres == NULL) {
+    listeAjouterDebut(liste, objet);
+  } else {
+    elem = malloc(sizeof (Element));
+    elem->reference = objet;
+    elem->precedent = apres;
+    elem->suivant = apres->suivant;
+    apres->suivant = elem;
+    elem->suivant->precedent = elem;
+    liste->nbElt++;
   }
 }
 

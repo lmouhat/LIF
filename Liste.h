@@ -12,8 +12,8 @@
 #include "Objet.h"
 
 /* Les types de chaine */
-#define NONORDONNE  0
-#define CROISSANT   1
+#define NORMAL 0
+#define CROISSANT 1
 #define DECROISSANT 2
 
 /* le type Element (élément de la liste) */
@@ -54,8 +54,8 @@ void listeDetruire(Liste* liste);
 /* opérations élémentaires */
 void listeAjouterFin(Liste* liste, Objet* objet);
 void listeAjouterDebut(Liste* liste, Objet* objet);
-void listeInsererApres(Liste* liste, Objet* objet, Element* apres);
-Objet* listeLireElement(Liste* liste, int n);
+void listeInsererTri(Liste* liste, Objet* objet);
+Objet* listeLireObjet(Liste* liste, int n);
 Objet* listeExtraireDebut(Liste* liste);
 Objet* listeExtraireFin(Liste* liste);
 int listeNbElt(Liste* liste);
