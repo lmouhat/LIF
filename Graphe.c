@@ -176,7 +176,7 @@ void grapheVersDot(Graphe* graphe) {
     sommet = grapheSommet(graphe, i);
     nb = listeNbElt(sommet->liste);
     for(j=0; j<nb; j++) {
-      arc = listeLireElement(sommet->liste, j);
+      arc = listeLireObjet(sommet->liste, j);
       fprintf(fichier, "\n\t%s -> %s", graphe->table->toString(sommet), \
               graphe->table->toString(arc->extremite));
       if(graphe->value == 1 && arc->cout >= 0) {
@@ -218,7 +218,7 @@ void grapheParcoursLargeur(Graphe* graphe, Noeud* depart) {
   while(listeVide(file) == 0) {
     sommet = listeExtraireFin(file);
     for(i=0; i<listeNbElt(sommet->liste); i++) {
-      arc = listeLireElement(sommet->liste, i);
+      arc = listeLireObjet(sommet->liste, i);
       if(arc->extremite->couleur == 0) {
         arc->extremite->couleur = 1;
         if(graphe->value == 0) {
@@ -259,7 +259,7 @@ void grapheAfficher(Graphe* graphe) {
             sommet->dateDecouverte, sommet->dateFin, \
             sommet->distance, sommet->couleur, parent);
     for(j=0; j<listeNbElt(sommet->liste); j++) {
-      arc = listeLireElement(sommet->liste, j);
+      arc = listeLireObjet(sommet->liste, j);
       printf("(%s) ", graphe->table->toString(arc->extremite));
     }
   }
@@ -330,7 +330,7 @@ static void parcoursProfondeur(Noeud* sommet) {
   sommet->dateDecouverte = date;
   
   for(i=0; i<listeNbElt(sommet->liste); i++) {
-    arc = listeLireElement(sommet->liste, i);
+    arc = listeLireObjet(sommet->liste, i);
     if(arc->extremite->couleur == 0) {
       arc->extremite->parent = sommet;
       parcoursProfondeur(arc->extremite);
