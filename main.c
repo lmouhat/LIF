@@ -76,7 +76,7 @@ void testListe(void) {
   printf("=== TEST LISTE ===\n");
   
   printf("\n01) Création d'une liste non ordonnée \n");
-  liste = listeCreer(NORMAL, toStringTest, comparerTest);
+  liste = listeCreer(toStringTest, comparerTest);
   
   printf("\n02) Ajout d'éléments à la liste \n");
   test = nouveau("test", 12, 123.677);

@@ -11,11 +11,6 @@
 
 #include "Objet.h"
 
-/* Les types de chaine */
-#define NORMAL 0
-#define CROISSANT 1
-#define DECROISSANT 2
-
 /* le type Element (élément de la liste) */
 struct s_Element {
   Objet* reference; /* référence un objet */
@@ -30,7 +25,6 @@ struct s_Liste {
   Element* dernier; /* dernier élément de la liste */
   Element* courant; /* élément en cours de traitement */
   int nbElt; /* nombre d'élements dans la liste */
-  int type; /* type de liste */
   char* (*toString) (Objet*);
   int (*comparer) (Objet*, Objet*);
 };
@@ -42,10 +36,10 @@ typedef struct s_Liste Liste;
  */
 
 /* construction - destruction */
-void listeInit(Liste* liste, int type, char* (*toString) (Objet*), \
+void listeInit(Liste* liste, char* (*toString) (Objet*), \
       int (*comparer) (Objet*, Objet*));
 void listeInitDefaut(Liste* liste);
-Liste* listeCreer(int type, char* (*toString) (Objet*), \
+Liste* listeCreer(char* (*toString) (Objet*), \
         int (*comparer) (Objet*, Objet*));
 Liste* listeCreerDefaut(void);
 void listeVider(Liste* liste);

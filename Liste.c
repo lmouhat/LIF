@@ -20,17 +20,15 @@ static void insererApres(Liste* liste, Objet* objet, Element* apres);
 
 /** @brief Initialise une liste
  *  @param liste La liste
- *  @param type Type de la liste
  *  @param toString Pointeur vers la fonction d'affichage
  *  @param comparer Pointeur vers la fonction de comparaison
  */
-void listeInit(Liste* liste, int type, char* (*toString) (Objet*), \
+void listeInit(Liste* liste, char* (*toString) (Objet*), \
       int (*comparer) (Objet*, Objet*)) {
   liste->premier = NULL;
   liste->dernier = NULL;
   liste->courant = NULL;
   liste->nbElt = 0;
-  liste->type = type;
   liste->toString = toString;
   liste->comparer = comparer;
 }
@@ -39,19 +37,18 @@ void listeInit(Liste* liste, int type, char* (*toString) (Objet*), \
  *  @param liste La liste
  */
 void listeInitDefaut(Liste* liste) {
-  listeInit(liste, NORMAL, toString, comparerChaine);
+  listeInit(liste, toString, comparerChaine);
 }
 
 /** @brief Crée une liste et l'initialise
- *  @param type Type de la liste
  *  @param toString Pointeur vers la fonction d'affichage
  *  @param comparer Pointeur vers la fonction de comparaison
  *  @return La liste créée et initialisée
  */
-Liste* listeCreer(int type, char* (*toString) (Objet*), \
+Liste* listeCreer(char* (*toString) (Objet*), \
         int (*comparer) (Objet*, Objet*)) {
   Liste* liste = malloc(sizeof (Liste));
-  listeInit(liste, type, toString, comparer);
+  listeInit(liste, toString, comparer);
   return liste;
 }
 
