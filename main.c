@@ -75,8 +75,8 @@ void testListe(void) {
   
   printf("=== TEST LISTE ===\n");
   
-  printf("\n01) Création d'une liste non ordonnée\n");
-  liste = listeCreer(NONORDONNE, toStringTest, comparerTest);
+  printf("\n01) Création d'une liste non ordonnée \n");
+  liste = listeCreer(NORMAL, toStringTest, comparerTest);
   
   printf("\n02) Ajout d'éléments à la liste \n");
   test = nouveau("test", 12, 123.677);
@@ -113,6 +113,9 @@ void testListe(void) {
   printf("\n");
   printf("\n05) Tri par QuickSort : \n");
   listeTriRapide(liste);
+/*
+  listeTriInsertion(liste);
+*/
   listeAfficherGD(liste);
   
   printf("\n");
