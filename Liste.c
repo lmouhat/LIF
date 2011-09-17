@@ -212,36 +212,6 @@ Objet* listeExtraireFin(Liste* liste) {
   return obj;
 }
 
-/** @brief Extraie l'objet après l'élément spécifié
- *  @param liste
- *  @param apres Element précédent celui à extraire
- *  @return Pointeur vers l'objet, NULL si échec
- *  @todo A effacer si inutile
- */
-/*
-Objet* listeExtraireApres(Liste* liste, Element* apres) {
-  Element* elem;
-  
-  if(apres == NULL) {
-    listeExtraireDebut(liste);
-  } else {
-    elem = apres->suivant;
-    if(elem != NULL) {
-      apres->suivant = elem->suivant;
-      if(elem == liste->dernier) {
-        liste->dernier = apres;
-      }
-      liste->nbElt--;
-    }
-  }
-  if(elem != NULL) {
-    return elem->reference;
-  } else {
-    return NULL;
-  }
-}
-*/
-
 /** @brief Recherche séquentielle d'un objet dans la liste
  *  @param liste La liste parcourue
  *  @param objet L'objet recherché
